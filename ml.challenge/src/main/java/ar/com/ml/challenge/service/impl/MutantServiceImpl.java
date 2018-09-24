@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 import ar.com.ml.challenge.entity.MutantCombination;
 import ar.com.ml.challenge.entity.MutantCombinationHorizontal;
-import ar.com.ml.challenge.entity.MutantCombinationOblique;
+import ar.com.ml.challenge.entity.MutantCombinationObliqueLeftToRight;
+import ar.com.ml.challenge.entity.MutantCombinationObliqueRightToLeft;
 import ar.com.ml.challenge.entity.MutantCombinationVertical;
 import ar.com.ml.challenge.enums.MutantesEnum;
 import ar.com.ml.challenge.exception.ServiceException;
@@ -16,14 +17,12 @@ import ar.com.ml.challenge.service.MutantService;
 @Service("mutantService")
 public class MutantServiceImpl implements MutantService {
 
-	private List<String> combinations;
 	private List<MutantCombination> combinationsHandler;
 	
 	public boolean isMutant(String[] dna) throws ServiceException {
 
 		initilizeCombinations();
-		addDnaCombinations(dna);
-		Boolean isMutant = isDnaMutant();
+		Boolean isMutant = isDnaMutant(dna);
 		
 		return isMutant;
 	}
@@ -33,12 +32,11 @@ public class MutantServiceImpl implements MutantService {
 	 */
 	private void initilizeCombinations() {
 		
-		combinations = new ArrayList<String>();
-		
 		combinationsHandler = new ArrayList<MutantCombination>();
 		combinationsHandler.add(new MutantCombinationHorizontal());
 		combinationsHandler.add(new MutantCombinationVertical());
-		combinationsHandler.add(new MutantCombinationOblique());
+		combinationsHandler.add(new MutantCombinationObliqueRightToLeft());
+		combinationsHandler.add(new MutantCombinationObliqueLeftToRight());
 	}
 
 	/**
@@ -46,41 +44,18 @@ public class MutantServiceImpl implements MutantService {
 	 * @param dna
 	 * @throws ServiceException 
 	 */
-	private void addDnaCombinations(String[] dna) throws ServiceException {
+	private Boolean isDnaMutant(String[] dna) throws ServiceException {
 
 		char[][] matrixDna = convertToMatrixAndValidateStructure(dna);
 		
+		int count = 0;
+		
 		for (MutantCombination combinationHandler : combinationsHandler) {
-			combinations.addAll(combinationHandler.getCombinations(dna, matrixDna));
+			combinationHandler.setMatrixDna(matrixDna);
+			count += combinationHandler.getCombinations();
 		}
 
-	}
-	
-	/**
-	 * Evalua a traves de las combinaciones posibles de una lista, si es un ADN mutante.
-	 * @return
-	 */
-	private Boolean isDnaMutant() {
-
-		int mutantCount = 0;
-		
-		for(String combinacion : combinations) {
-			
-			if(combinacion.contains(MutantesEnum.A.getCombination()))
-				mutantCount++;
-			if(combinacion.contains(MutantesEnum.T.getCombination()))
-				mutantCount++;
-			if(combinacion.contains(MutantesEnum.C.getCombination())) 
-				mutantCount++;
-			if(combinacion.contains(MutantesEnum.G.getCombination()))
-				mutantCount++;
-		}
-		
-		if(mutantCount > 1) {
-			return true;
-		}else {
-			return false;
-		}
+		return (count > 1) ? true : false;
 	}
 	
 	/**

@@ -33,11 +33,10 @@ public class MutantController {
     @RequestMapping(value = "/mutant", method = RequestMethod.POST)
 	public ResponseEntity<String> mutant(@RequestBody String[] dna, HttpServletResponse response) {
     	
-    	Human human = null;
-    	
     	try {
 			Boolean isMutant = mutantService.isMutant(dna);
-			human = new Human(Arrays.toString(dna), isMutant);
+			Human human = new Human(Arrays.toString(dna), isMutant);
+			humanRepository.save(human);
 			
 			return (isMutant) ? new ResponseEntity<String>(HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		
@@ -47,12 +46,6 @@ public class MutantController {
 		} catch (Exception e) {
 			LOG.error("Error al verificar el ADN", e);
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-		} finally {
-			try {
-				humanRepository.save(human);
-			} catch (Exception e) {
-				LOG.error("Error al verificar el ADN", e);
-			}
 		}
     }
 		

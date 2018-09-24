@@ -11,8 +11,12 @@ import ar.com.ml.challenge.model.Human;
 @RepositoryRestResource(collectionResourceRel = "humans", path = "humans")
 public interface HumanRepository extends PagingAndSortingRepository<Human, Long> {
 
+	@Override
+//	@CacheEvict("humans") //, allEntries=true
+	<S extends Human> S save(S entity);
+
 	List<Human> findByIsMutant(@Param("isMutant") Boolean isMutant);
-	
+
 	Long countByIsMutant(@Param("isMutant") Boolean isMutant);
 
 }
