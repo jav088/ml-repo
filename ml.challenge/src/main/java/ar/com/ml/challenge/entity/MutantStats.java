@@ -2,28 +2,28 @@ package ar.com.ml.challenge.entity;
 
 public class MutantStats {
 	
-	private double mutantsCount;
-	private double humansCount;
+	private Long mutantsCount;
+	private Long humansCount;
 	private double ratio;
 	
 	
-	public MutantStats(double mutantsCount, double humansCount, double ratio) {
+	public MutantStats(Long mutantsCount, Long humansCount, double ratio) {
 		super();
 		this.mutantsCount = mutantsCount;
 		this.humansCount = humansCount;
 		this.ratio = ratio;
 	}
 	
-	public double getMutantsCount() {
+	public Long getMutantsCount() {
 		return mutantsCount;
 	}
-	public void setMutantsCount(double mutantsCount) {
+	public void setMutantsCount(Long mutantsCount) {
 		this.mutantsCount = mutantsCount;
 	}
-	public double getHumansCount() {
+	public Long getHumansCount() {
 		return humansCount;
 	}
-	public void setHumansCount(double humansCount) {
+	public void setHumansCount(Long humansCount) {
 		this.humansCount = humansCount;
 	}
 	public double getRatio() {
