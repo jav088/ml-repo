@@ -7,16 +7,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import ar.com.ml.challenge.model.Human;
+import ar.com.ml.challenge.repository.custom.HumanRepositoryCustom;
 
 @RepositoryRestResource(collectionResourceRel = "humans", path = "humans")
-public interface HumanRepository extends PagingAndSortingRepository<Human, Long> {
-
-	@Override
-//	@CacheEvict("humans") //, allEntries=true
-	<S extends Human> S save(S entity);
+public interface HumanRepository extends PagingAndSortingRepository<Human, Long>, HumanRepositoryCustom {
 
 	List<Human> findByIsMutant(@Param("isMutant") Boolean isMutant);
 
 	Long countByIsMutant(@Param("isMutant") Boolean isMutant);
-
+	
 }

@@ -1,4 +1,4 @@
-package ar.com.ml.challenge;
+package ar.com.ml.challenge.service;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,6 +26,13 @@ public class MlServiceTest {
 	}
 	
 	@Test
+	public void isMutantFalseTest() throws ServiceException {
+		
+		String[] dnaNoMutante = {"ATGCGA", "CAGTGC", "TTATGT", "AGAGGG", "TCCCTA", "TCACTG"};
+		Assert.assertFalse(mutantService.isMutant(dnaNoMutante));
+	}
+	
+	@Test
 	public void isMutantTrueTwoOfLine() throws ServiceException {
 		
 		String[] dnaMutante = { "AAAAAAAA",
@@ -40,7 +47,7 @@ public class MlServiceTest {
 	}
 	
 	@Test
-	public void isMutantTrueObliqueHorizontal() throws ServiceException {
+	public void isMutantFalseObliqueHorizontal() throws ServiceException {
 		
 		String[] dnaMutante = { "CAAAACAA",
 								"CAGTCCTC",
@@ -50,15 +57,10 @@ public class MlServiceTest {
 								"TCAGCGCA",
 								"TCACTGCT",
 								"TCACTGTC"};
-		Assert.assertTrue(mutantService.isMutant(dnaMutante));
+		Assert.assertFalse(mutantService.isMutant(dnaMutante));
 	}
 	
-	@Test
-	public void isMutantFalseTest() throws ServiceException {
-		
-		String[] dnaNoMutante = {"ATGCGA", "CAGTGC", "TTATGT", "AGAGGG", "TCCCTA", "TCACTG"};
-		Assert.assertFalse(mutantService.isMutant(dnaNoMutante));
-	}
+
 
 	@Test(expected = ServiceException.class)
 	public void validateExceptionNotSquareMatrixTest() throws ServiceException {
@@ -74,22 +76,14 @@ public class MlServiceTest {
 		mutantService.isMutant(dnaMutanteConJ);
 	}
 	
-//	@Test
-//	public void isMutantDataTest() throws ServiceException {
-//		
-//		long time_start = System.currentTimeMillis();
-//		String[] dnaMutante = {"AAGCGA","CAATAC","TTGAGT","AGAGAG","CCGCTA","TCACTG"};
-//		boolean isMutant = true;
-//		for (int i = 0; i < 1000000; i++) {
-//			long forDateInit = System.currentTimeMillis();
-//			isMutant = mutantService.isMutant(dnaMutante);
-//			long forDateEnd = System.currentTimeMillis();
-//			System.out.println("For: " + ( forDateEnd - forDateInit ) + " milliseconds");
-//		}
-//		long time_end = System.currentTimeMillis();
-//		System.out.println("Completing Test Volume data: " + ( time_end - time_start ) + " milliseconds");
-//		Assert.assertTrue(isMutant);
-//
-//	}
+	@Test
+	public void isMutantDataTest() throws ServiceException {
+		
+		String[] dnaMutante = {"AAGCGA","CAATAC","TTGAGT","AGAGAG","CCGCTA","TCACTG"};
+	
+		for (int i = 0; i < 1000000; i++) {
+			Assert.assertTrue(mutantService.isMutant(dnaMutante));
+		}
+	}
 	
 }

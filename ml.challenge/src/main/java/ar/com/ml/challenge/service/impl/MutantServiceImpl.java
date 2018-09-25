@@ -22,9 +22,10 @@ public class MutantServiceImpl implements MutantService {
 	public boolean isMutant(String[] dna) throws ServiceException {
 
 		initilizeCombinations();
-		Boolean isMutant = isDnaMutant(dna);
 		
-		return isMutant;
+		char[][] matrixDna = convertToMatrixAndValidateStructure(dna);
+		
+		return isDnaMutant(matrixDna);
 	}
 
 	/**
@@ -39,25 +40,6 @@ public class MutantServiceImpl implements MutantService {
 		combinationsHandler.add(new MutantCombinationObliqueLeftToRight());
 	}
 
-	/**
-	 * Agrega todas las combinaciones posibles de ADN de una matriz cuadrada a una lista.
-	 * @param dna
-	 * @throws ServiceException 
-	 */
-	private Boolean isDnaMutant(String[] dna) throws ServiceException {
-
-		char[][] matrixDna = convertToMatrixAndValidateStructure(dna);
-		
-		int count = 0;
-		
-		for (MutantCombination combinationHandler : combinationsHandler) {
-			combinationHandler.setMatrixDna(matrixDna);
-			count += combinationHandler.getCombinations();
-		}
-
-		return (count > 1) ? true : false;
-	}
-	
 	/**
 	 * Convierte el Array de Strings en una Matriz de Strings.
 	 * Valida que la matriz sea cuadrada y que los datos ingresados sean A,T,C,G.
@@ -102,5 +84,22 @@ public class MutantServiceImpl implements MutantService {
 		
 		return charArray;
 	}
+	
+	/**
+	 * Ejecuta los buscadores de coincidencias y suma la cantidad para saber si es mutante.
+	 * @param matrixDna
+	 * @throws ServiceException 
+	 */
+	private Boolean isDnaMutant(char[][] matrixDna) throws ServiceException {
 
+		int count = 0;
+		
+		for (MutantCombination combinationHandler : combinationsHandler) {
+			combinationHandler.setMatrixDna(matrixDna);
+			count += combinationHandler.getCombinations();
+		}
+
+		return (count > 1) ? true : false;
+	}
+	
 }

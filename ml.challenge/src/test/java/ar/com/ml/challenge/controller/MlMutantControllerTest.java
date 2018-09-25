@@ -1,4 +1,4 @@
-package ar.com.ml.challenge;
+package ar.com.ml.challenge.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import ar.com.ml.challenge.util.IntegrationTestUtil;
+import ar.com.ml.challenge.util.JsonUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -42,10 +42,23 @@ public class MlMutantControllerTest {
 		testMutantServiceRest(dnaMutante, HttpStatus.FORBIDDEN);
     }
 	
+	@Test
+	public void isMutantDataTest() throws IOException, Exception {
+		
+		String[] dnaMutante = {"AAGCGA","CAATAC","TTGAGT","AGAGAG","CCGCTA","TCACTG"};
+	
+		for (int i = 0; i < 1000000; i++) {
+			long time_start = System.currentTimeMillis();
+			testMutantServiceRest(dnaMutante, HttpStatus.OK);
+			long time_end = System.currentTimeMillis();
+			System.out.println("Completing: " + ( time_end - time_start ) + " milliseconds");
+		}
+	}
+	
 	private String testMutantServiceRest(String[] dna, HttpStatus code) throws IOException, Exception {
 		
 		ResultActions resultAction = mockMvc.perform(post("/mutant").contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(IntegrationTestUtil.convertObjectToJsonBytes(dna))).andDo(print());
+				.content(JsonUtil.convertObjectToJsonBytes(dna)));
 		
 		if(HttpStatus.OK == code) {
 			resultAction.andExpect(status().isOk());

@@ -23,7 +23,9 @@ public class Human implements Serializable {
 	@Column(name="IS_MUTANT")
 	private Boolean isMutant;
 
-	
+	public Human() {
+	}
+
 	public Human(String dna, Boolean isMutant) {
 		super();
 		this.dna = dna;

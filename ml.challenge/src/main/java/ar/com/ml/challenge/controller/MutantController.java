@@ -19,6 +19,7 @@ import ar.com.ml.challenge.exception.ServiceException;
 import ar.com.ml.challenge.model.Human;
 import ar.com.ml.challenge.repository.HumanRepository;
 import ar.com.ml.challenge.service.MutantService;
+import ar.com.ml.challenge.util.NumericUtil;
 
 @RestController
 public class MutantController {
@@ -36,7 +37,7 @@ public class MutantController {
     	try {
 			Boolean isMutant = mutantService.isMutant(dna);
 			Human human = new Human(Arrays.toString(dna), isMutant);
-			humanRepository.save(human);
+			humanRepository.saveCacheHuman(human);
 			
 			return (isMutant) ? new ResponseEntity<String>(HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		
@@ -53,17 +54,13 @@ public class MutantController {
 	public ResponseEntity<MutantStats> getStats() {
     	
     	try {
-			double mutantsCount = humanRepository.countByIsMutant(true);
-			double humansCount = humanRepository.count();
+			Long mutantsCount = humanRepository.countByIsMutant(true);
+			Long humansCount = humanRepository.count();
 			double ratio;
 			
-			if(humansCount == 0) {
-				ratio = 0;
-			}else {
-				ratio = mutantsCount / humansCount;
-			}
-			
-			MutantStats stats = new MutantStats(mutantsCount, humansCount, ratio);
+			ratio = (humansCount == 0) ? 0 : (double) mutantsCount / humansCount;
+
+			MutantStats stats = new MutantStats(mutantsCount, humansCount, NumericUtil.round(ratio, 2));
 			return ResponseEntity.ok(stats);
 
 		} catch (Exception e) {

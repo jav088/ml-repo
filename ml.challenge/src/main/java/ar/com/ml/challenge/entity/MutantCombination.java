@@ -18,8 +18,8 @@ public abstract class MutantCombination {
 			count += findCombinations(i);
 		}
 		
-		if(count > 0)
-			System.out.println(getName());
+//		if(count > 0)
+//			System.out.println(getName());
 		
 		return count;	
 	}
