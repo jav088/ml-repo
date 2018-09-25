@@ -18,13 +18,8 @@ public abstract class MutantCombination {
 			count += findCombinations(i);
 		}
 		
-//		if(count > 0)
-//			System.out.println(getName());
-		
 		return count;	
 	}
-	
-	protected abstract String getName();
 
 	protected abstract Integer findCombinations(int row);
 

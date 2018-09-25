@@ -16,28 +16,28 @@ import ar.com.ml.challenge.service.MutantService;
 
 @Service("mutantService")
 public class MutantServiceImpl implements MutantService {
-
-	private List<MutantCombination> combinationsHandler;
 	
 	public boolean isMutant(String[] dna) throws ServiceException {
 
-		initilizeCombinations();
+		List<MutantCombination> combinationsHandler = initilizeCombinations();
 		
 		char[][] matrixDna = convertToMatrixAndValidateStructure(dna);
 		
-		return isDnaMutant(matrixDna);
+		return isDnaMutant(combinationsHandler, matrixDna);
 	}
 
 	/**
 	 * Inicializa los handlers de las combinaciones posibles de una matriz.
 	 */
-	private void initilizeCombinations() {
+	private List<MutantCombination> initilizeCombinations() {
 		
-		combinationsHandler = new ArrayList<MutantCombination>();
+		List<MutantCombination> combinationsHandler = new ArrayList<MutantCombination>();
 		combinationsHandler.add(new MutantCombinationHorizontal());
 		combinationsHandler.add(new MutantCombinationVertical());
 		combinationsHandler.add(new MutantCombinationObliqueRightToLeft());
 		combinationsHandler.add(new MutantCombinationObliqueLeftToRight());
+		
+		return combinationsHandler;
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class MutantServiceImpl implements MutantService {
 		int rows = dna.length;
 		
 		if(dna[position].length() != rows) {
-			throw new ServiceException("La cantidad de adn ingresado en la posicion " +String.valueOf(position-1)+ 
+			throw new ServiceException("La cantidad de adn ingresado en la posicion " +String.valueOf(position)+ 
 					" del adn " +dna[position]+ " es incorrecto, la matriz debe ser cuadrada"); 
 		}
 		
@@ -87,10 +87,11 @@ public class MutantServiceImpl implements MutantService {
 	
 	/**
 	 * Ejecuta los buscadores de coincidencias y suma la cantidad para saber si es mutante.
+	 * @param combinationsHandler 
 	 * @param matrixDna
 	 * @throws ServiceException 
 	 */
-	private Boolean isDnaMutant(char[][] matrixDna) throws ServiceException {
+	private Boolean isDnaMutant(List<MutantCombination> combinationsHandler, char[][] matrixDna) throws ServiceException {
 
 		int count = 0;
 		

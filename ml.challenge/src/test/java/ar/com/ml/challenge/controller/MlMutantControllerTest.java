@@ -2,6 +2,7 @@ package ar.com.ml.challenge.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
@@ -29,31 +30,33 @@ public class MlMutantControllerTest {
     private MockMvc mockMvc;
 
 	@Test
-    public void restMutantOKTest() throws Exception {
+    public void restIsMutantOKTest() throws Exception {
 
 		String[] dnaMutante = {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
 		testMutantServiceRest(dnaMutante, HttpStatus.OK);
     }
 	
 	@Test
-    public void restMutantForbiddenNoEsCuadradaTest() throws Exception {
+	public void isMutantTrueVerticalTest() throws Exception {
+		
+		String[] dnaNoMutante = {"ATGCGA", "CAGTGC", "TTATGT", "AGAGGG", "TCCCTA", "TCACTG"};
+		testMutantServiceRest(dnaNoMutante, HttpStatus.FORBIDDEN);
+	}
+	
+	@Test
+    public void restIsMutantForbiddenNoEsCuadradaTest() throws Exception {
 
 		String[] dnaMutante = {"GCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
 		testMutantServiceRest(dnaMutante, HttpStatus.FORBIDDEN);
     }
 	
 	@Test
-	public void isMutantDataTest() throws IOException, Exception {
+    public void restGetIsMutantOkTest() throws Exception {
+
+		ResultActions resultAction = this.mockMvc.perform(get("/stats")).andDo(print());
 		
-		String[] dnaMutante = {"AAGCGA","CAATAC","TTGAGT","AGAGAG","CCGCTA","TCACTG"};
-	
-		for (int i = 0; i < 1000000; i++) {
-			long time_start = System.currentTimeMillis();
-			testMutantServiceRest(dnaMutante, HttpStatus.OK);
-			long time_end = System.currentTimeMillis();
-			System.out.println("Completing: " + ( time_end - time_start ) + " milliseconds");
-		}
-	}
+	    System.out.println(resultAction);
+    }
 	
 	private String testMutantServiceRest(String[] dna, HttpStatus code) throws IOException, Exception {
 		

@@ -24,8 +24,4 @@ public class MutantCombinationObliqueLeftToRight extends MutantCombination {
 		return isDnaMutant(combinacionDiagonalSuperior) + isDnaMutant(combinacionDiagonalInferior);
 	}
 	
-	@Override
-	protected String getName() {
-		return "Oblique Left to Right";
-	}
 }

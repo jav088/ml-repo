@@ -8,12 +8,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ar.com.ml.challenge.exception.ServiceException;
-import ar.com.ml.challenge.service.MutantService;
 import ar.com.ml.challenge.service.impl.MutantServiceImpl;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {MutantServiceImpl.class})
-public class MlServiceTest {
+public class MlMutantServiceTest {
 
 	@Autowired
 	private MutantService mutantService;
@@ -22,6 +21,13 @@ public class MlServiceTest {
 	public void isMutantTrueTest() throws ServiceException {
 		
 		String[] dnaMutante = {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
+		Assert.assertTrue(mutantService.isMutant(dnaMutante));
+	}
+	
+	@Test
+	public void isMutantTrueVerticalTest() throws ServiceException {
+		
+		String[] dnaMutante = {"CTGCGA","CAGTGC","CTATGT","CGAAGG","CGCCTA","TCACTG"};
 		Assert.assertTrue(mutantService.isMutant(dnaMutante));
 	}
 	
@@ -47,6 +53,15 @@ public class MlServiceTest {
 	}
 	
 	@Test
+	public void isMutantFalseOneMatchTest() throws ServiceException {
+		
+		String[] dnaMutante = {"TTGCGA","CAGTGC","TTATGT","AGAAGG","ACCCTA","TCACTG"};
+		Assert.assertFalse(mutantService.isMutant(dnaMutante));
+	}
+	
+
+	
+	@Test
 	public void isMutantFalseObliqueHorizontal() throws ServiceException {
 		
 		String[] dnaMutante = { "CAAAACAA",
@@ -60,8 +75,6 @@ public class MlServiceTest {
 		Assert.assertFalse(mutantService.isMutant(dnaMutante));
 	}
 	
-
-
 	@Test(expected = ServiceException.class)
 	public void validateExceptionNotSquareMatrixTest() throws ServiceException {
 		

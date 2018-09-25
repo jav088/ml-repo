@@ -5,11 +5,10 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import ar.com.ml.challenge.controller.MlMutantControllerTest;
-import ar.com.ml.challenge.service.MlServiceTest;
+import ar.com.ml.challenge.service.MlMutantServiceTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ MlServiceTest.class, MlMutantControllerTest.class })
-
+@SuiteClasses({ MlMutantServiceTest.class, MlMutantControllerTest.class })
 public class ApplicationTestSuite {
 
 }

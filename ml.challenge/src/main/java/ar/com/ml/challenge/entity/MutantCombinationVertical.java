@@ -17,8 +17,4 @@ public class MutantCombinationVertical extends MutantCombination {
 		return isDnaMutant(combinacionVertical);
 	}
 
-	@Override
-	protected String getName() {
-		return "Vertical";
-	}
 }
