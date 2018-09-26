@@ -7,18 +7,18 @@ public class MutantCombinationObliqueLeftToRight extends MutantCombination {
 	 * @param row
 	 */
 	@Override
-	public Integer findCombinations(int row) {
+	public Integer findCombinations(char[][] matrixDna, int row) {
 		
 		//Combinacion Diagonal Superior
 		String combinacionDiagonalSuperior = "";
-	    for (int j=getMatrixDna().length-1; j>=getMatrixDna().length-1-row; j--) { 
-	    	combinacionDiagonalSuperior += getMatrixDna()[row+j-getMatrixDna().length+1][j];
+	    for (int j=matrixDna.length-1; j>=matrixDna.length-1-row; j--) { 
+	    	combinacionDiagonalSuperior += matrixDna[row+j-matrixDna.length+1][j];
 	    }
 	    
 	    //Combinacion Diagonal Inferior
 	    String combinacionDiagonalInferior = "";
-	    for (int j=0;j<getMatrixDna().length-row-1; j++) { 
-	    	combinacionDiagonalInferior += getMatrixDna()[row+j+1][j];
+	    for (int j=0;j<matrixDna.length-row-1; j++) { 
+	    	combinacionDiagonalInferior += matrixDna[row+j+1][j];
 		}
 		
 		return isDnaMutant(combinacionDiagonalSuperior) + isDnaMutant(combinacionDiagonalInferior);

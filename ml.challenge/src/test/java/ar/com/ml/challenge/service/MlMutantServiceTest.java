@@ -27,15 +27,29 @@ public class MlMutantServiceTest {
 	@Test
 	public void isMutantTrueVerticalTest() throws ServiceException {
 		
-		String[] dnaMutante = {"CTGCGA","CAGTGC","CTATGT","CGAAGG","CGCCTA","TCACTG"};
+		String[] dnaMutante = {"CTGCGA","CTGTGC","CTATCT","CTAAGG","CGCCTA","TCACTG"};
 		Assert.assertTrue(mutantService.isMutant(dnaMutante));
 	}
 	
 	@Test
-	public void isMutantFalseTest() throws ServiceException {
+	public void isMutantTrueHorizontalTest() throws ServiceException {
 		
-		String[] dnaNoMutante = {"ATGCGA", "CAGTGC", "TTATGT", "AGAGGG", "TCCCTA", "TCACTG"};
-		Assert.assertFalse(mutantService.isMutant(dnaNoMutante));
+		String[] dnaMutante = {"CCCCGA","TTTTGC","CGAGCT","CTAAGG","CGCCTA","TCACTG"};
+		Assert.assertTrue(mutantService.isMutant(dnaMutante));
+	}
+	
+	@Test
+	public void isMutantTrueObliqueLeftToRightTest() throws ServiceException {
+		
+		String[] dnaMutante = {"CGCCGA","TCTTGT","CTCGAT","CTTCGG","CGCTTA","TCACCG"};
+		Assert.assertTrue(mutantService.isMutant(dnaMutante));
+	}
+	
+	@Test
+	public void isMutantTrueObliqueRightToLeftTest() throws ServiceException {
+		
+		String[] dnaMutante = {"AGCCGA","ACTTAC","CTCACT","CTACGG","CGCTTA","TGACCG"};
+		Assert.assertTrue(mutantService.isMutant(dnaMutante));
 	}
 	
 	@Test
@@ -53,13 +67,18 @@ public class MlMutantServiceTest {
 	}
 	
 	@Test
+	public void isMutantFalseTest() throws ServiceException {
+		
+		String[] dnaNoMutante = {"ATGCGA", "CAGTGC", "TTATGT", "AGAGGG", "TCCCTA", "TCACTG"};
+		Assert.assertFalse(mutantService.isMutant(dnaNoMutante));
+	}
+	
+	@Test
 	public void isMutantFalseOneMatchTest() throws ServiceException {
 		
 		String[] dnaMutante = {"TTGCGA","CAGTGC","TTATGT","AGAAGG","ACCCTA","TCACTG"};
 		Assert.assertFalse(mutantService.isMutant(dnaMutante));
 	}
-	
-
 	
 	@Test
 	public void isMutantFalseObliqueHorizontal() throws ServiceException {

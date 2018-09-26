@@ -7,11 +7,11 @@ public class MutantCombinationHorizontal extends MutantCombination {
 	 * @param row
 	 */
 	@Override
-	public Integer findCombinations(int row) {
+	public Integer findCombinations(char[][] matrixDna, int row) {
 		
 		String combinacionHorizontal = "";
-		for (int j=0; j<getMatrixDna()[row].length; j++) { 
-			combinacionHorizontal += getMatrixDna()[row][j];
+		for (int j=0; j<matrixDna[row].length; j++) { 
+			combinacionHorizontal += matrixDna[row][j];
 		}
 		
 		return isDnaMutant(combinacionHorizontal);

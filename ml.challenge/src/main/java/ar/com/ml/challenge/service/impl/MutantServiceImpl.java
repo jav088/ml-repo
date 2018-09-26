@@ -1,15 +1,8 @@
 package ar.com.ml.challenge.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
-import ar.com.ml.challenge.entity.MutantCombination;
-import ar.com.ml.challenge.entity.MutantCombinationHorizontal;
-import ar.com.ml.challenge.entity.MutantCombinationObliqueLeftToRight;
-import ar.com.ml.challenge.entity.MutantCombinationObliqueRightToLeft;
-import ar.com.ml.challenge.entity.MutantCombinationVertical;
+import ar.com.ml.challenge.entity.HandlerMutantCombination;
 import ar.com.ml.challenge.enums.MutantesEnum;
 import ar.com.ml.challenge.exception.ServiceException;
 import ar.com.ml.challenge.service.MutantService;
@@ -18,26 +11,10 @@ import ar.com.ml.challenge.service.MutantService;
 public class MutantServiceImpl implements MutantService {
 	
 	public boolean isMutant(String[] dna) throws ServiceException {
-
-		List<MutantCombination> combinationsHandler = initilizeCombinations();
 		
 		char[][] matrixDna = convertToMatrixAndValidateStructure(dna);
 		
-		return isDnaMutant(combinationsHandler, matrixDna);
-	}
-
-	/**
-	 * Inicializa los handlers de las combinaciones posibles de una matriz.
-	 */
-	private List<MutantCombination> initilizeCombinations() {
-		
-		List<MutantCombination> combinationsHandler = new ArrayList<MutantCombination>();
-		combinationsHandler.add(new MutantCombinationHorizontal());
-		combinationsHandler.add(new MutantCombinationVertical());
-		combinationsHandler.add(new MutantCombinationObliqueRightToLeft());
-		combinationsHandler.add(new MutantCombinationObliqueLeftToRight());
-		
-		return combinationsHandler;
+		return isDnaMutant(matrixDna);
 	}
 
 	/**
@@ -91,16 +68,12 @@ public class MutantServiceImpl implements MutantService {
 	 * @param matrixDna
 	 * @throws ServiceException 
 	 */
-	private Boolean isDnaMutant(List<MutantCombination> combinationsHandler, char[][] matrixDna) throws ServiceException {
+	private Boolean isDnaMutant(char[][] matrixDna) throws ServiceException {
 
-		int count = 0;
+		HandlerMutantCombination handler = new HandlerMutantCombination();
+		int combinations = handler.getCombinations(matrixDna);
 		
-		for (MutantCombination combinationHandler : combinationsHandler) {
-			combinationHandler.setMatrixDna(matrixDna);
-			count += combinationHandler.getCombinations();
-		}
-
-		return (count > 1) ? true : false;
+		return (combinations > 1) ? true : false;
 	}
 	
 }

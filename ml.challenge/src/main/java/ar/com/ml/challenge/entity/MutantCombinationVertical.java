@@ -7,11 +7,11 @@ public class MutantCombinationVertical extends MutantCombination {
 	 * @param row
 	 */
 	@Override
-	public Integer findCombinations(int row) {
+	public Integer findCombinations(char[][] matrixDna, int row) {
 	
 		String combinacionVertical = "";
-		for (int j=0; j<getMatrixDna()[row].length; j++) { 
-			combinacionVertical += getMatrixDna()[j][row];
+		for (int j=0; j<matrixDna[row].length; j++) { 
+			combinacionVertical += matrixDna[j][row];
 		}
 		
 		return isDnaMutant(combinacionVertical);
